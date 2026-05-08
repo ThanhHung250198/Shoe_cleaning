@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Giỏ hàng</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .cart-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button {
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+    }
+
+    .clear-btn {
+      background: gray;
+      color: white;
+      border: none;
+      margin-top: 10px;
+    }
+
+    .order-btn {
+      background: green;
+      color: white;
+      border: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🛒 Giỏ hàng của bạn</h1>
+
+<div id="cart-list"></div>
+
+<button class="clear-btn" onclick="clearCart()">Xóa tất cả</button>
+<button class="order-btn" onclick="datHang()">Đặt hàng</button>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function renderCart() {
+    const cartList = document.getElementById("cart-list");
+    cartList.innerHTML = "";
+
+    if (cart.length === 0) {
+      cartList.innerHTML = "<p>Giỏ hàng đang trống</p>";
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "cart-item";
+
+      div.innerHTML = `
+        <span>${item}</span>
+        <button class="delete-btn" onclick="removeItem(${index})">X</button>
+      `;
+
+      cartList.appendChild(div);
+    });
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function clearCart() {
+    if (confirm("Bạn có chắc muốn xóa hết không?")) {
+      cart = [];
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+  }
+
+  function datHang() {
+    if (cart.length === 0) {
+      alert("Giỏ hàng trống!");
+      return;
+    }
+
+    let message = "Khách đặt hàng:\n";
+
+    cart.forEach((item, index) => {
+      message += (index + 1) + ". " + item + "\n";
+    });
+
+    let url = "https://zalo.me/0382155536?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank");
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
