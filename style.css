@@ -363,9 +363,31 @@ footer {
     gap: 10px;
   }
 
-  nav {
-    flex-direction: row;
-    padding: 15px;
+  nav{
+
+    padding: 0 10px;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    justify-content: flex-start;
+
+    scrollbar-width: none;
+  }
+
+  nav::-webkit-scrollbar{
+    display:none;
+  }
+
+  nav a{
+
+    flex: 0 0 auto;
+
+    font-size: 13px;
+
+    padding: 8px 10px;
+
   }
 
   .products{
